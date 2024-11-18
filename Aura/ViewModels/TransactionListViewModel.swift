@@ -10,6 +10,7 @@ import Foundation
 class TransactionListViewModel: ObservableObject {
     @Published var transactions: [Transaction] = []
     
+    
     init(accountDetailViewModel: AccountDetailViewModel) {
 //        self.transactions = accountDetailViewModel.getAllTransactions()
         
