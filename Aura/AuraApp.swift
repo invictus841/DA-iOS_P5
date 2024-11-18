@@ -16,7 +16,7 @@ struct AuraApp: App {
             Group {
                 if viewModel.isLogged {
                     TabView {
-                        AccountDetailView(accountViewModel: AccountDetailViewModel())
+                        AccountDetailView(accountViewModel: AccountDetailViewModel(), transactionViewModel: TransactionListViewModel(accountDetailViewModel: AccountDetailViewModel()))
                             .tabItem {
                                 Image(systemName: "person.crop.circle")
                                 Text("Account")

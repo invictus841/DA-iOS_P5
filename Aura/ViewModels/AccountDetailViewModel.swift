@@ -8,15 +8,44 @@
 import Foundation
 
 class AccountDetailViewModel: ObservableObject {
-    @Published var totalAmount: String = "€12,345.67"
-    @Published var recentTransactions: [Transaction] = [
-        Transaction(description: "Starbucks", amount: "-€5.50"),
-        Transaction(description: "Amazon Purchase", amount: "-€34.99"),
-        Transaction(description: "Salary", amount: "+€2,500.00")
-    ]
+    @Published var totalAmount: Decimal = 0.0
     
-    struct Transaction {
-        let description: String
-        let amount: String
+    @Published var recentTransactions: [Transaction] = []
+    
+    var allTransactions: [Transaction] = []
+    
+    init() {
+        fetchAccountDetails()
     }
-}
+    
+    func getAllTransactions() -> [Transaction] {
+           return allTransactions
+       }
+    
+    func fetchAccountDetails() {
+       guard let url = URL(string: "http://127.0.0.1:8080/account"),
+             let token = KeychainManager.standard.getToken() else { return }
+       
+       var request = URLRequest(url: url)
+       request.setValue(token, forHTTPHeaderField: "token")
+       
+       URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+           guard let data = data,
+                 let accountResponse = try? JSONDecoder().decode(AccountResponse.self, from: data) else { return }
+           
+           DispatchQueue.main.async {
+               self?.totalAmount = accountResponse.currentBalance
+               
+               self?.allTransactions = accountResponse.transactions.map { transaction in
+                   return Transaction(description: transaction.label, amount: transaction.value)
+               }
+               
+               self?.recentTransactions = Array((self?.allTransactions.prefix(3))!)
+               
+               print("Transactions récentes:")
+               self?.recentTransactions.forEach { transaction in
+                   print("\(transaction.description): \(transaction.amount)")
+               }
+           }
+       }.resume()
+    }}

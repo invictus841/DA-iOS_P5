@@ -23,6 +23,7 @@
 		AC0124502CE74A9300FB63AA /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01244F2CE74A9300FB63AA /* TransactionListView.swift */; };
 		AC01245E2CEAF3ED00FB63AA /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01245D2CEAF3ED00FB63AA /* Transaction.swift */; };
 		AC0124602CEAF40C00FB63AA /* AccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01245F2CEAF40C00FB63AA /* AccountResponse.swift */; };
+		AC0124622CEB985C00FB63AA /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0124612CEB985C00FB63AA /* KeychainManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		AC01244F2CE74A9300FB63AA /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
 		AC01245D2CEAF3ED00FB63AA /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		AC01245F2CEAF40C00FB63AA /* AccountResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountResponse.swift; sourceTree = "<group>"; };
+		AC0124612CEB985C00FB63AA /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				AC01245C2CEAF3D000FB63AA /* Models */,
 				53D4188A2AC709B30070ADB1 /* ViewModels */,
 				53D418892AC709AD0070ADB1 /* Views */,
+				AC0124632CEB9B3C00FB63AA /* Managers */,
 				53D4187B2AC7099A0070ADB1 /* AuraApp.swift */,
 				53D4187F2AC7099B0070ADB1 /* Assets.xcassets */,
 				53D418812AC7099B0070ADB1 /* Preview Content */,
@@ -133,6 +136,14 @@
 				AC01245F2CEAF40C00FB63AA /* AccountResponse.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		AC0124632CEB9B3C00FB63AA /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				AC0124612CEB985C00FB63AA /* KeychainManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,6 +220,7 @@
 				53D418952AC70ABF0070ADB1 /* MoneyTransferView.swift in Sources */,
 				53D4189B2AC711990070ADB1 /* AuthenticationViewModel.swift in Sources */,
 				53D4189D2AC715AA0070ADB1 /* AccountDetailViewModel.swift in Sources */,
+				AC0124622CEB985C00FB63AA /* KeychainManager.swift in Sources */,
 				53D418912AC70A920070ADB1 /* AuthenticationView.swift in Sources */,
 				AC01245E2CEAF3ED00FB63AA /* Transaction.swift in Sources */,
 				AC0124502CE74A9300FB63AA /* TransactionListView.swift in Sources */,
