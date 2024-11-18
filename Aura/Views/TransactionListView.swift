@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct TransactionListView: View {
-    let allTransactions: [AccountDetailViewModel.Transaction]
+    @State private var viewModel = AccountDetailViewModel()
    
    var body: some View {
        ScrollView {
            LazyVStack(spacing: 16) {
-               ForEach(allTransactions) { transaction in
+               ForEach(viewModel.allTransactions) { transaction in
                    TransactionRow(transaction: transaction)
                        .padding(.horizontal)
                }
@@ -25,7 +25,7 @@ struct TransactionListView: View {
 }
 
 struct TransactionRow: View {
-   let transaction: AccountDetailViewModel.Transaction
+   let transaction: Transaction
    
    var body: some View {
        HStack {
@@ -46,5 +46,5 @@ struct TransactionRow: View {
 }
 
 #Preview {
-    TransactionListView(allTransactions: [])
+    TransactionListView()
 }
