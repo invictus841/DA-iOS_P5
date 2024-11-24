@@ -8,7 +8,14 @@
 import Foundation
 import Security
 
-class KeychainManager {
+// For mock, c'est un squelette
+protocol KeychainManaging {
+    func save(_ token: String) -> Bool
+    func getToken() -> String?
+    func deleteToken()
+}
+
+class KeychainManager: KeychainManaging {
     static let standard = KeychainManager()
     private init() {} // Singleton
     
