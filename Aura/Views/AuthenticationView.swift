@@ -17,6 +17,14 @@ struct AuthenticationView: View {
         viewModel.username.contains("@") && viewModel.username.contains(".")
     }
     
+    private var usernameEmpty: Bool {
+        viewModel.username.isEmpty
+    }
+    
+    private var passwordEmpty: Bool {
+        viewModel.password.isEmpty
+    }
+    
     private var isPasswordValid: Bool {
         viewModel.password.count > 3
     }
@@ -45,7 +53,7 @@ struct AuthenticationView: View {
                 VStack {
                     Text("email adress is not valid")
                         .foregroundColor(.red)
-                        .opacity(isUsernameValid ? 0 : 1)
+                        .opacity(usernameEmpty || isUsernameValid ? 0 : 1)
                         .animation(.easeInOut(duration: 0.2), value: isUsernameValid)
                     
                     TextField("Adresse email", text: $viewModel.username)
@@ -65,7 +73,7 @@ struct AuthenticationView: View {
                     
                     Text("password should be 3 characters or more")
                         .foregroundColor(.red)
-                        .opacity(isPasswordValid ? 0 : 1)
+                        .opacity(passwordEmpty || isPasswordValid ? 0 : 1)
                         .animation(.easeInOut(duration: 0.2), value: isPasswordValid)
                 }
                 
@@ -92,7 +100,5 @@ struct AuthenticationView: View {
 }
 
 #Preview {
-    AuthenticationView(viewModel: AuthenticationViewModel({
-        
-    }))
+    AuthenticationView(viewModel: AuthenticationViewModel(onLoginSucceed: {}))
 }
