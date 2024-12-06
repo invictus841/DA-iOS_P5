@@ -11,6 +11,8 @@ class MoneyTransferViewModel: ObservableObject {
     @Published var recipient: String = ""
     @Published var amount: String = ""
     @Published var transferMessage: String = ""
+    @Published var showSuccess: Bool = false
+    @Published var showAlert: Bool = false
     
     @Published var isTransferring: Bool = false
     @Published var showError: Bool = false
@@ -32,6 +34,7 @@ class MoneyTransferViewModel: ObservableObject {
               let amountDecimal = Decimal(string: amount) else {
             transferMessage = "Invalid amount format"
             showError = true
+            showAlert = true
             return
         }
         
@@ -43,6 +46,7 @@ class MoneyTransferViewModel: ObservableObject {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: transferData) else {
             transferMessage = "Error preparing data"
             showError = true
+            showAlert = true
             return
         }
         
@@ -53,7 +57,7 @@ class MoneyTransferViewModel: ObservableObject {
             method: "POST",
             body: jsonData,
             token: token
-        ) { [weak self] (result: Result<[String: String], Error>) in
+        ) { [weak self] (result: Result<EmptyResponse, Error>) in
             DispatchQueue.main.async {
                 self?.isTransferring = false
                 
@@ -61,11 +65,15 @@ class MoneyTransferViewModel: ObservableObject {
                 case .success:
                     self?.transferMessage = "Successfully transferred \(self?.amount ?? "0")€ to \(self?.recipient ?? "")"
                     self?.showError = false
+                    self?.showSuccess = true
+                    self?.showAlert = true
                     self?.amount = ""
                     self?.recipient = ""
                 case .failure(let error):
                     self?.transferMessage = "Transfer failed: \(error.localizedDescription)"
                     self?.showError = true
+                    self?.showSuccess = false
+                    self?.showAlert = true
                 }
             }
         }

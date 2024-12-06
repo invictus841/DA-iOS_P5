@@ -7,7 +7,6 @@
 
 import Foundation
 
-// For mock, c'est un squelette
 protocol NetworkService {
     func makeRequest<T: Decodable>(
         url: URL,
@@ -18,7 +17,8 @@ protocol NetworkService {
     )
 }
 
-// Real implementation that uses URLSession
+struct EmptyResponse: Decodable {}
+
 class URLSessionNetworkService: NetworkService {
     func makeRequest<T: Decodable>(
         url: URL,
@@ -40,6 +40,15 @@ class URLSessionNetworkService: NetworkService {
                 if let error = error {
                     completion(.failure(error))
                     return
+                }
+                
+                if let httpResponse = response as? HTTPURLResponse {
+                    if (200...299).contains(httpResponse.statusCode) {
+                        if T.self == EmptyResponse.self {
+                            completion(.success(EmptyResponse() as! T))
+                            return
+                        }
+                    }
                 }
                 
                 guard let data = data else {

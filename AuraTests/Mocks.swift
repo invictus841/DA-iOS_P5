@@ -23,11 +23,11 @@ class MockNetworkService: NetworkService {
                 let response = ["token": token] as! T
                 completion(.success(response))
             } else if T.self == [String: String].self {
-                // Specifically handle [String: String] type
                 let emptyResponse = [:] as! T
                 completion(.success(emptyResponse))
+            } else if T.self == EmptyResponse.self {  // Add this case
+                completion(.success(EmptyResponse() as! T))
             } else {
-                // If we can't handle the type, send an error
                 completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unsupported response type"])))
             }
         } else {

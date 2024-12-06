@@ -11,8 +11,6 @@ struct MoneyTransferView: View {
     @ObservedObject var viewModel = MoneyTransferViewModel()
     @State private var animationScale: CGFloat = 1.0
     
-    @State private var showAlert = false
-    
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "arrow.right.arrow.left.circle.fill")
@@ -76,12 +74,20 @@ struct MoneyTransferView: View {
         .onTapGesture {
             self.endEditing(true)
         }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Error"),
-                message: Text(viewModel.transferMessage),
-                dismissButton: .default(Text("OK"))
-            )
+        .alert(isPresented: $viewModel.showAlert) {
+            if viewModel.showSuccess {
+                return Alert(
+                    title: Text("Success"),
+                    message: Text(viewModel.transferMessage),
+                    dismissButton: .default(Text("OK"))
+                )
+            } else {
+                return Alert(
+                    title: Text("Error"),
+                    message: Text(viewModel.transferMessage),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
     
@@ -89,22 +95,29 @@ struct MoneyTransferView: View {
         if viewModel.recipient.isEmpty {
             viewModel.transferMessage = "Please enter recipient"
             viewModel.showError = true
-            showAlert = true
+            viewModel.showAlert = true
             return
         }
         
         let emailPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}+"
-            if !NSPredicate(format:"SELF MATCHES %@", emailPattern).evaluate(with: viewModel.recipient) {
-                viewModel.transferMessage = "Please enter a valid email address"
-                viewModel.showError = true
-                showAlert = true
-                return
-            }
+        if !NSPredicate(format:"SELF MATCHES %@", emailPattern).evaluate(with: viewModel.recipient) {
+            viewModel.transferMessage = "Please enter a valid email address"
+            viewModel.showError = true
+            viewModel.showAlert = true
+            return
+        }
         
         if viewModel.amount.isEmpty {
             viewModel.transferMessage = "Please enter amount"
             viewModel.showError = true
-            showAlert = true
+            viewModel.showAlert = true
+            return
+        }
+        
+        if Double(viewModel.amount) == nil {
+            viewModel.transferMessage = "Please enter a valid amount"
+            viewModel.showError = true
+            viewModel.showAlert = true
             return
         }
         
