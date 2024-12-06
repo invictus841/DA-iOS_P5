@@ -100,8 +100,13 @@ struct MoneyTransferView: View {
         }
         
         let emailPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}+"
-        if !NSPredicate(format:"SELF MATCHES %@", emailPattern).evaluate(with: viewModel.recipient) {
-            viewModel.transferMessage = "Please enter a valid email address"
+        let phonePattern = "^(?:(?:\\+|00)33[\\s.-]{0,3}(?:\\(0\\)[\\s.-]{0,3})?|0)[1-9](?:[\\s.-]?\\d{2}){4}$"
+        
+        let isValidEmail = NSPredicate(format:"SELF MATCHES %@", emailPattern).evaluate(with: viewModel.recipient)
+        let isValidPhone = NSPredicate(format:"SELF MATCHES %@", phonePattern).evaluate(with: viewModel.recipient)
+        
+        if !isValidEmail && !isValidPhone {
+            viewModel.transferMessage = "Please enter a valid email address or phone number"
             viewModel.showError = true
             viewModel.showAlert = true
             return
